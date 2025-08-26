@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar sesión</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0f172a;         /* slate-900 */
+      --card: #0b1224cc;     /* translucent card */
+      --primary: #6366f1;    /* indigo-500 */
+      --primary-hover:#4f46e5;/* indigo-600 */
+      --text: #e5e7eb;       /* gray-200 */
+      --muted:#94a3b8;       /* slate-400 */
+      --error:#ef4444;       /* red-500 */
+      --success:#22c55e;     /* green-500 */
+      --input:#0b1224;       /* deep */
+      --ring: #818cf8;       /* indigo-400 */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(99,102,241,.25), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(34,197,94,.18), transparent 55%),
+        linear-gradient(180deg, #0b1023 0%, #0f172a 100%);
+      display:grid;
+      place-items:center;
+      padding: 24px;
+    }
+
+    .wrapper{ width: 100%; max-width: 420px; }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148,163,184,.18);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .logo{
+      display:flex; align-items:center; gap:12px; margin-bottom: 18px;
+    }
+    .logo-badge{
+      width: 54px; height: 54px; border-radius:12px; display:grid; place-items:center;
+      background: radial-gradient(120% 120% at 20% 20%, var(--primary), #22c55e);
+      color:white; font-weight: 800;
+      box-shadow: 0 8px 24px rgba(99,102,241,.45);
+    }
+    h1{ font-size: 1.35rem; margin: 0; }
+    p.lead{ margin:6px 0 18px 0; color: var(--muted); font-size:.95rem; }
+
+    form{ display:grid; gap: 14px; }
+
+    .field{ display:grid; gap: 6px; }
+    label{ font-size:.9rem; color: #cbd5e1; }
+
+    .input{
+      display:flex; align-items:center; gap:8px;
+      background: var(--input);
+      border: 1px solid rgba(148,163,184,.22);
+      border-radius: 12px;
+      padding: 12px 14px;
+      transition: border .2s ease, box-shadow .2s ease;
+    }
+    .input:focus-within{
+      border-color: var(--ring);
+      box-shadow: 0 0 0 4px rgba(129, 140, 248, .15);
+    }
+    .input input{
+      width:100%; border:0; outline:0; background:transparent; color: var(--text);
+      font-size: .98rem;
+    }
+    .input button.icon{
+      border:0; outline:0; background:transparent; cursor:pointer; color: var(--muted);
+      padding: 4px; border-radius: 8px;
+    }
+    .input button.icon:hover{ color: var(--text); }
+
+    .row{ display:flex; align-items:center; justify-content:space-between; gap: 10px; }
+    .row .remember{ display:flex; align-items:center; gap:8px; color: var(--muted); font-size:.9rem; }
+    .row a{ color: var(--text); text-decoration:none; font-size:.9rem; opacity:.9; }
+    .row a:hover{ text-decoration: underline; }
+
+    .btn{
+      width:100%; border:0; outline:0; cursor:pointer; font-weight:600;
+      background: linear-gradient(180deg, var(--primary), var(--primary-hover));
+      color:white; padding: 12px 16px; border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(79,70,229,.35);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    .btn:hover{ filter: brightness(1.05); }
+    .btn:active{ transform: translateY(1px); }
+
+    .subtle{ text-align:center; color: var(--muted); font-size:.92rem; margin-top: 10px; }
+    .subtle a{ color: var(--text); text-decoration: none; }
+    .subtle a:hover{ text-decoration: underline; }
+
+    .alert{ display:none; margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size:.92rem; }
+    .alert.error{ background: rgba(239,68,68,.12); color: #fecaca; border: 1px solid rgba(239,68,68,.35); }
+    .alert.success{ background: rgba(34,197,94,.12); color:#bbf7d0; border: 1px solid rgba(34,197,94,.35); }
+
+    /* Small helpers for accessibility */
+    .visually-hidden{ position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; }
+
+    /* Responsive tweaks */
+    @media (max-width:420px){
+      .card{ padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrapper">
+    <div class="card" role="region" aria-labelledby="title">
+      <div class="logo" aria-hidden="true">
+        <div class="logo-badge" title="ETITC">ETITC</div>
+        <div>
+          <h1 id="title">Bienvenido 👋</h1>
+          <p class="lead">Inicia sesión para continuar</p>
+        </div>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Correo electrónico</label>
+          <div class="input">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <div class="input">
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" minlength="6" required />
+            <button class="icon" type="button" id="togglePwd" aria-label="Mostrar u ocultar contraseña" title="Mostrar/Ocultar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="remember">
+            <input type="checkbox" id="remember" /> Mantener sesión
+          </label>
+          <a href="#" onclick="event.preventDefault()">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button class="btn" type="submit">Ingresar</button>
+        <div id="alert" class="alert" role="status" aria-live="polite"></div>
+      </form>
+
+      <p class="subtle">¿No tienes cuenta? <a href="#">Crear una cuenta</a></p>
+    </div>
+  </main>
+
+  <script>
+    // Mostrar / ocultar contraseña
+    const toggle = document.getElementById('togglePwd');
+    const pwd = document.getElementById('password');
+    toggle.addEventListener('click', () => {
+      const type = pwd.getAttribute('type') === 'password' ? 'text' : 'password';
+      pwd.setAttribute('type', type);
+      toggle.setAttribute('aria-pressed', type === 'text');
+    });
+
+    // Validación simple de ejemplo (cliente)
+    const form = document.getElementById('loginForm');
+    const alertBox = document.getElementById('alert');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alertBox.className = 'alert';
+      alertBox.style.display = 'none';
+
+      const email = document.getElementById('email').value.trim();
+      const password = pwd.value.trim();
+
+      if(!email || !password){
+        showAlert('Por favor completa todos los campos.', 'error');
+        return;
+      }
+      if(password.length < 6){
+        showAlert('La contraseña debe tener al menos 6 caracteres.', 'error');
+        return;
+      }
+
+      // Aquí harías tu llamada a la API / autenticación real
+      // fetch('/api/login', { method:'POST', body: JSON.stringify({ email, password }) })
+      //   .then(...)
+
+      showAlert('Inicio de sesión de ejemplo correcto ✔', 'success');
+      form.reset();
+    });
+
+    function showAlert(msg, type){
+      alertBox.textContent = msg;
+      alertBox.classList.add(type);
+      alertBox.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
